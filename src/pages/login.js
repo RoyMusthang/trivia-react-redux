@@ -16,10 +16,21 @@ class LoginScreen extends React.Component {
     this.nicknameValidation = this.nicknameValidation.bind(this);
   }
 
-  emailValidation() {
-    const { email, validate } = this.state;
-    const EMAIL_VALIDATION = /^[\w]+@([\w]+\.)+[\w]{2,4}$/gi;
-    if (EMAIL_VALIDATION.test(email)) {
+  handleChange({ target }) {
+    const { value, name } = target;
+    if (name === 'email') {
+      this.emailValidation(value);
+      return this.setState({ [name]: value });
+    } if (name === 'nickname') {
+      this.nicknameValidation(value);
+      return this.setState({ [name]: value });
+    }
+  }
+
+  emailValidation(value) {
+    const { validate } = this.state;
+    const EMAIL_VALIDATION = /\S+@\S+\.\S+/;
+    if (EMAIL_VALIDATION.test(value)) {
       return this.setState({
         validate: {
           ...validate,
@@ -27,13 +38,13 @@ class LoginScreen extends React.Component {
         },
       });
     }
-    this.setState({ validate: { ...validate, login: false } });
+    return this.setState({ validate: { ...validate, login: false } });
   }
 
-  nicknameValidation() {
-    const { nickname, validate } = this.state;
+  nicknameValidation(value) {
+    const { validate } = this.state;
     const MIN_NICKNAME_LENGTH = 1;
-    if (nickname.length >= MIN_NICKNAME_LENGTH) {
+    if (value.length >= MIN_NICKNAME_LENGTH) {
       return this.setState({
         validate: {
           ...validate,
@@ -41,21 +52,11 @@ class LoginScreen extends React.Component {
         },
       });
     }
-    this.setState({ validate: { ...validate, validateNickname: false } });
+    return this.setState({ validate: { ...validate, validateNickname: false } });
   }
 
   render() {
     const { nickname, email, validate } = this.state;
-    const handleChange = ({ target }) => {
-      const { value, name } = target;
-      if (name === 'email') {
-        return this.setState({ [name]: value },
-          () => { this.emailValidation(); });
-      }
-      this.setState({ [name]: value },
-        () => { this.nicknameValidation(); });
-    };
-
     return (
       <form>
         <label htmlFor="name">
