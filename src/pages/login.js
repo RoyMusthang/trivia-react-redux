@@ -4,10 +4,11 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <form>
-        <label>
+        <label htmlFor="name">
           Nickname:
           <input
             data-testid="input-player-name"
+            id="name"
             name="name"
             type="text"
             placeholder="Seu Nickname"
@@ -15,11 +16,12 @@ class LoginScreen extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <label>
+        <label htmlFor="email">
           Email:
           <input
             data-testid="input-gravatar-email"
             type="email"
+            id="email"
             name="email"
             placeholder="Seu Email"
             value={ email }

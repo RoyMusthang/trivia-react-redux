@@ -12,10 +12,10 @@ export default function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={ LoginScreen } />
-        <Route exact path="/game" component={ GameScreen } />
-        <Route exact path="/config" component={ ConfigsScreen } />
-        <Route exact path="/feedback" component={ FeedbackScreen } />
-        <Route exact path="/ranking" component={ RankingScreen } />
+        {/* <Route exact path="/game" component={ GameScreen } /> */}
+        {/* <Route exact path="/config" component={ ConfigsScreen } /> */}
+        {/* <Route exact path="/feedback" component={ FeedbackScreen } /> */}
+        {/* <Route exact path="/ranking" component={ RankingScreen } /> */}
       </Switch>
     </Router>
     
