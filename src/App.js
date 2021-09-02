@@ -6,6 +6,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import LoginScreen from './pages/login';
 
 export default function App() {
   return (
