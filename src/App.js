@@ -19,6 +19,5 @@ export default function App() {
         {/* <Route exact path="/ranking" component={ RankingScreen } /> */}
       </Switch>
     </Router>
-    
   );
 }
