@@ -68,7 +68,7 @@ class LoginScreen extends React.Component {
             type="text"
             placeholder="Seu Nickname"
             value={ nickname }
-            onChange={ handleChange }
+            onChange={ this.handleChange }
           />
         </label>
         <label htmlFor="email">
@@ -80,7 +80,7 @@ class LoginScreen extends React.Component {
             name="email"
             placeholder="Seu Email"
             value={ email }
-            onChange={ handleChange }
+            onChange={ this.handleChange }
           />
         </label>
         <button
