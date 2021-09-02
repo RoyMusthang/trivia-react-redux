@@ -8,48 +8,55 @@ class LoginScreen extends React.Component {
       email: '',
       validate: {
         validateNickname: false,
-        validateEmail: false
+        validateEmail: false,
       },
     };
     this.handleChange = this.handleChange.bind(this);
+    this.emailValidation = this.emailValidation.bind(this);
+    this.nicknameValidation = this.nicknameValidation.bind(this);
   }
 
   handleChange({ target }) {
     const { value, name } = target;
-    this.setState({ [name]: value });
+    if (name === 'email') {
+      this.emailValidation();
+      return this.setState({ [name]: value });
+    } if (name === 'nickname') {
+      this.nicknameValidation();
+      return this.setState({ [name]: value });
+    }
   }
 
-  ////////////////////////////////////////////////
   emailValidation() {
     const { email, validate } = this.state;
     const EMAIL_VALIDATION = /^[\w]+@([\w]+\.)+[\w]{2,4}$/gi;
     if (EMAIL_VALIDATION.test(email)) {
-      return this.setState({ // bug achado com ajuda de rogerio p. da silva
+      return this.setState({
         validate: {
           ...validate,
-          login: true,
+          validateEmail: true,
         },
       });
     }
     this.setState({ validate: { ...validate, login: false } });
   }
 
-  passwordValidation() {
-    const { password, validate } = this.state;
-    const MIN_PASSWORD_LENGTH = 6;
-    if (password.length >= MIN_PASSWORD_LENGTH) {
+  nicknameValidation() {
+    const { nickname, validate } = this.state;
+    const MIN_NICKNAME_LENGTH = 1;
+    if (nickname.length >= MIN_NICKNAME_LENGTH) {
       return this.setState({
         validate: {
           ...validate,
-          password: true,
+          validateNickname: true,
         },
       });
     }
-    this.setState({ validate: { ...validate, password: false } });
+    this.setState({ validate: { ...validate, validateNickname: false } });
   }
-  ////////////////////////////////////////////////////////////////////////////////////////////////
 
   render() {
+    const { nickname, email, validate } = this.state;
     return (
       <form>
         <label htmlFor="name">
@@ -79,7 +86,7 @@ class LoginScreen extends React.Component {
         <button
           type="button"
           data-testid="btn-play"
-          disabled
+          disabled={ !validate.validateEmail || !validate.validateNickname }
         >
           Jogar
         </button>
