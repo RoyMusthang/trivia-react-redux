@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from 'react-router-dom';
+} from 'react-router-dom';  
 import LoginScreen from './pages/login';
 
 export default function App() {
@@ -18,7 +18,6 @@ export default function App() {
         {/* <Route exact path="/feedback" component={ FeedbackScreen } /> */}
         {/* <Route exact path="/ranking" component={ RankingScreen } /> */}
       </Switch>
-    </Router>
-    
+    </Router>    
   );
 }
