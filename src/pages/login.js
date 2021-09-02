@@ -1,6 +1,24 @@
 import React from 'react';
 
 class LoginScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      nickname: '',
+      email: '',
+      validate: {
+        validateNickname: false,
+        validateEmail: false
+      },
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange({ target }) {
+    const { value, name } = target;
+    this.setState({ [name]: value });
+  }
+
   render() {
     return (
       <form>
@@ -9,10 +27,10 @@ class LoginScreen extends React.Component {
           <input
             data-testid="input-player-name"
             id="name"
-            name="name"
+            name="nickname"
             type="text"
             placeholder="Seu Nickname"
-            value={ name }
+            value={ nickname }
             onChange={ this.handleChange }
           />
         </label>
