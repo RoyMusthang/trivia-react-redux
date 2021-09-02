@@ -29,12 +29,12 @@ class LoginScreen extends React.Component {
         <button
           type="button"
           data-testid="btn-play"
-          disabled={true}
+          disabled
         >
           Jogar
         </button>
       </form>
-    )
+    );
   }
 }
 
