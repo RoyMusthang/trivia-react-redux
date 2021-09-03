@@ -6,10 +6,16 @@ class GameScreen extends React.Component {
     super();
 
     this.state = {
-      token: '',
       contador: 0,
+      token: '',
+      questions: {
+        results: [{
+          category: '',
+          correct_answer: '',
+          incorrect_answers: [''],
+        }],
+      },
     };
-
     this.apiQuestion = this.apiQuestion.bind(this);
     this.getToken = this.getToken.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -36,24 +42,17 @@ class GameScreen extends React.Component {
   async apiQuestion() {
     const { token } = this.state;
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-    const questionFilter = fetchQuestions.json();
-    return questionFilter.results;
+    const questions = fetchQuestions.json();
+    this.setState({ questions });
   }
 
   render() {
+    const { contador, questions: { results } } = this.state;
     return (
       <div>
         <Link to="/">Back</Link>
-        <div data-testid="question-category">
-          <h1>
-            { this.apiQuestion().question }
-          </h1>
-          <button type="button">
-            { this.apiQuestion().correct_answer }
-          </button>
-          {/* { this.apiQuestion().incorrect_answers.map((item, index) => (<button type="button" key={ index }>{ item }</button>
-          ))} */}
-        </div>
+        <h2 data-testid="question-category">{ results[contador].category }</h2>
+        <p data-testid="question-text">{ results[contador].question }</p>
         <button
           type="button"
           onClick={ this.handleClick() }
