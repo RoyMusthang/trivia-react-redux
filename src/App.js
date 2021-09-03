@@ -7,6 +7,7 @@ import {
   Route,
 } from 'react-router-dom';
 import LoginScreen from './pages/login';
+import ConfigsScreen from './pages/config';
 
 export default function App() {
   return (
