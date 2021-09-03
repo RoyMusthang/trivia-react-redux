@@ -17,7 +17,6 @@ class LoginScreen extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.emailValidation = this.emailValidation.bind(this);
     this.nicknameValidation = this.nicknameValidation.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -29,10 +28,6 @@ class LoginScreen extends React.Component {
       this.nicknameValidation(value);
       return this.setState({ [name]: value });
     }
-  }
-
-  handleCLick() {
-    console.log('click');
   }
 
   emailValidation(value) {
@@ -95,7 +90,6 @@ class LoginScreen extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ !validate.validateEmail || !validate.validateNickname }
-          onClick={ this.handleClick }
         >
           Jogar
         </button>
