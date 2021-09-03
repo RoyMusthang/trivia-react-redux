@@ -7,7 +7,7 @@ import {
   Route,
 } from 'react-router-dom';
 import LoginScreen from './pages/login';
-import ConfigsScreen from './pages/config';
+import ConfigScreen from './pages/config';
 import GameScreen from './pages/game';
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={ LoginScreen } />
         <Route exact path="/game" component={ GameScreen } />
-        <Route exact path="/config" component={ ConfigsScreen } />
+        <Route exact path="/config" component={ ConfigScreen } />
         {/* <Route exact path="/feedback" component={ FeedbackScreen } /> */}
         {/* <Route exact path="/ranking" component={ RankingScreen } /> */}
       </Switch>

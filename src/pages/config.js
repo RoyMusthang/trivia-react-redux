@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ConfigsScreen extends Component {
+class ConfigScreen extends Component {
   render() {
     return (
       <div>
@@ -10,4 +10,4 @@ class ConfigsScreen extends Component {
   }
 }
 
-export default ConfigsScreen;
+export default ConfigScreen;

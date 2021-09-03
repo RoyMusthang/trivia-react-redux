@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
+import fetchTokenApi from './index';
 
 class LoginScreen extends React.Component {
   constructor() {
@@ -13,8 +15,10 @@ class LoginScreen extends React.Component {
         validateNickname: false,
         validateEmail: false,
       },
+      shouldRedirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.emailValidation = this.emailValidation.bind(this);
     this.nicknameValidation = this.nicknameValidation.bind(this);
   }
@@ -58,8 +62,14 @@ class LoginScreen extends React.Component {
     return this.setState({ validate: { ...validate, validateNickname: false } });
   }
 
+  handleClick() {
+    this.setState({ shouldRedirect: true });
+    fetchTokenApi();
+  }
+
   render() {
-    const { nickname, email, validate } = this.state;
+    const { nickname, email, validate, shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/game" />;
     return (
       <form>
         <label htmlFor="name">
@@ -87,6 +97,7 @@ class LoginScreen extends React.Component {
           />
         </label>
         <button
+          onClick={ this.handleClick }
           type="button"
           data-testid="btn-play"
           disabled={ !validate.validateEmail || !validate.validateNickname }
