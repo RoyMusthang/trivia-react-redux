@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
 
 class LoginScreen extends React.Component {
   constructor() {
@@ -31,10 +31,8 @@ class LoginScreen extends React.Component {
     }
   }
 
-  handleClick() {
-    const { validate } = this.state;
-    const { history } = this.props;
-    if (validate.validateEmail && validate.validateNickname) history.push('/carteira');
+  handleCLick() {
+    console.log('click');
   }
 
   emailValidation(value) {
@@ -107,8 +105,4 @@ class LoginScreen extends React.Component {
   }
 }
 
-LoginScreen.propTypes = {
-  history: PropTypes.func.isRequired,
-};
-
-export default connect(LoginScreen);
+export default LoginScreen;

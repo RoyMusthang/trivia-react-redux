@@ -8,13 +8,14 @@ import {
 } from 'react-router-dom';
 import LoginScreen from './pages/login';
 import ConfigsScreen from './pages/config';
+import GameScreen from './pages/game';
 
 export default function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={ LoginScreen } />
-        {/* <Route exact path="/game" component={ GameScreen } /> */}
+        <Route exact path="/game" component={ GameScreen } />
         <Route exact path="/config" component={ ConfigsScreen } />
         {/* <Route exact path="/feedback" component={ FeedbackScreen } /> */}
         {/* <Route exact path="/ranking" component={ RankingScreen } /> */}
