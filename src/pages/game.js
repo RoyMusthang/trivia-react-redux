@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Options from '../componets/Options';
 
 class GameScreen extends React.Component {
   constructor() {
@@ -8,54 +9,45 @@ class GameScreen extends React.Component {
     this.state = {
       contador: 0,
       token: '',
-      questions: {
-        results: [{
-          category: '',
-          correct_answer: '',
-          incorrect_answers: [''],
-        }],
-      },
+      questions: [],
     };
-    this.apiQuestion = this.apiQuestion.bind(this);
-    this.getToken = this.getToken.bind(this);
+
+    this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
-    this.getToken();
+    this.fetchQuestion();
   }
 
-  getToken() {
+  async fetchQuestion() {
     const tokenGet = localStorage.getItem(('token'));
-    this.setState({
-      token: tokenGet,
-    });
+    const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
+    const questionsApi = await fetchQuestions.json();
+    localStorage.setItem('questions', JSON.stringify(questionsApi.results));
+    console.log(questionsApi.results);
+    this.setState({ questions: questionsApi.results });
   }
 
   handleClick() {
     const { contador } = this.state;
-    this.setState = ({
+    this.setState({
       contador: contador + 1,
     });
   }
 
-  async apiQuestion() {
-    const { token } = this.state;
-    const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-    const questions = fetchQuestions.json();
-    this.setState({ questions });
-  }
-
   render() {
-    const { contador, questions: { results } } = this.state;
+    const { contador, questions } = this.state;
+    if (!questions[contador]) return 'loading...';
     return (
       <div>
         <Link to="/">Back</Link>
-        <h2 data-testid="question-category">{ results[contador].category }</h2>
-        <p data-testid="question-text">{ results[contador].question }</p>
+        <h2 data-testid="question-category">{questions[contador].category}</h2>
+        <h3 data-testid="question-text">{questions[contador].question}</h3>
+        <Options questions={ questions } contador={ contador } />
         <button
           type="button"
-          onClick={ this.handleClick() }
+          onClick={ this.handleClick }
         >
           Next
         </button>
