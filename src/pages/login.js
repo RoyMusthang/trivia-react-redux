@@ -63,8 +63,18 @@ class LoginScreen extends React.Component {
   }
 
   handleClick() {
+    const { nickname, email } = this.state;
+    const players = {
+      player: {
+        name: nickname,
+        assertions: '',
+        score: '',
+        gravatarEmail: email,
+      },
+    };
     this.setState({ shouldRedirect: true });
     fetchTokenApi();
+    localStorage.setItem('state', JSON.stringify(players));
   }
 
   render() {
