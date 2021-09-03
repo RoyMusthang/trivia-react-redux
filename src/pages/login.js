@@ -27,6 +27,13 @@ class LoginScreen extends React.Component {
     }
   }
 
+  handleClick() {
+    const { email, validate } = this.state;
+    const { history, dispatchInputLogin } = this.props;
+    dispatchInputLogin(email);
+    if (validate.validateEmail && validate.validateNickname) history.push('/carteira');
+  };
+
   emailValidation(value) {
     const { validate } = this.state;
     const EMAIL_VALIDATION = /\S+@\S+\.\S+/;
@@ -87,9 +94,11 @@ class LoginScreen extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ !validate.validateEmail || !validate.validateNickname }
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
+        <Link to="/config" data-testid="btn-settings">Settings</Link>
       </form>
     );
   }
