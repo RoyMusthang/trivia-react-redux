@@ -4,14 +4,7 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   constructor() {
     super();
-    this.getInfo = this.getInfo.bind(this);
     this.createGravatar = this.createGravatar.bind(this);
-  }
-
-  getInfo(key) {
-    const localGet = JSON.parse(localStorage.getItem('state'));
-    const { player } = localGet;
-    return player[key];
   }
 
   createGravatar() {
@@ -20,6 +13,8 @@ class Header extends Component {
   }
 
   render() {
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+    const { player: { name } } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
         <img
@@ -30,13 +25,9 @@ class Header extends Component {
         <h3
           data-testid="header-player-name"
         >
-          { this.getInfo('name')}
+          { name }
         </h3>
-        <p
-          data-testid="header-score"
-        >
-          0
-        </p>
+        <p data-testid="header-score">{score}</p>
       </header>
     );
   }
