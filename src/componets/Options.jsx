@@ -4,51 +4,40 @@ import React, { Component } from 'react';
 class Options extends Component {
   constructor() {
     super();
-    this.shuffle = this.shuffle.bind(this);
+    this.state = {
+      isCorrect: false,
+    };
+    this.verifyCorrect = this.verifyCorrect.bind(this);
   }
 
-  shuffle() {
-    const { questions, contador } = this.props;
-    const array = [
-      <option
-        key="1"
-        data-testid="correct-answer"
-      >
-        {questions[contador].correct_answer}
-      </option>,
-      <option
-        key="2"
-        data-testid={ `wrong-answer-${0}` }
-      >
-        {questions[contador].incorrect_answers[0]}
-      </option>,
-      <option
-        key="3"
-        data-testid={ `wrong-answer-${1}` }
-      >
-        {questions[contador].incorrect_answers[1]}
-      </option>,
-      <option
-        key="4"
-        data-testid={ `wrong-answer-${2}` }
-      >
-        {questions[contador].incorrect_answers[2]}
-      </option>,
-      <option
-        key="5"
-        data-testid={ `wrong-answer-${2 + 1}` }
-      >
-        {questions[contador].incorrect_answers[3]}
-      </option>,
-    ];
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  componentDidMount() {
+    this.verifyCorrect();
+  }
+
+  verifyCorrect() {
+    const { contador, chave } = this.props;
+    if (contador === chave) {
+      return this.setState({ isCorrect: true });
     }
+    return this.setState({ isCorrect: false });
   }
 
   render() {
-    return <select>{this.shuffle()}</select>;
+    const { contador, questions, chave } = this.props;
+    const { isCorrect } = this.state;
+    if (isCorrect) {
+      return (
+        <option data-testid="correct-answer">
+          {questions[contador].correct_answer}
+        </option>);
+    }
+    return (
+      <option
+        data-testid={ `wrong-answer-${chave}` }
+      >
+        {questions[contador].incorrect_answers[chave - 1]}
+      </option>
+    );
   }
 }
 

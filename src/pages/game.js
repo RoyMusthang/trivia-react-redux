@@ -25,7 +25,6 @@ class GameScreen extends React.Component {
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
     localStorage.setItem('questions', JSON.stringify(questionsApi.results));
-    console.log(questionsApi.results);
     this.setState({ questions: questionsApi.results });
   }
 
@@ -45,9 +44,14 @@ class GameScreen extends React.Component {
         <Link to="/">Back</Link>
         <h2 data-testid="question-category">{questions[contador].category}</h2>
         <h3 data-testid="question-text">{questions[contador].question}</h3>
-        <Options questions={ questions } contador={ contador } />
+        <select>
+          <Options questions={ questions } chave={ 0 } contador={ contador } />
+          <Options questions={ questions } chave={ 1 } contador={ contador } />
+          <Options questions={ questions } chave={ 2 } contador={ contador } />
+          <Options questions={ questions } chave={ 3 } contador={ contador } />
+        </select>
         <button
-          type="button"
+          type="submit"
           onClick={ this.handleClick }
         >
           Next
