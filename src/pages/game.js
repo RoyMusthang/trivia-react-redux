@@ -9,7 +9,6 @@ class GameScreen extends React.Component {
 
     this.state = {
       contador: 0,
-      token: '',
       questions: [],
     };
 
