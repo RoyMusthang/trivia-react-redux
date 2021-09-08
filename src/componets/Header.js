@@ -7,27 +7,26 @@ class Header extends Component {
     this.createGravatar = this.createGravatar.bind(this);
   }
 
-  createGravatar() {
-    const gravatar = md5(this.getInfo('gravatarEmail').toString());
+  createGravatar(info) {
+    const gravatar = md5(info.toString());
     return gravatar;
   }
 
   render() {
-    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
-    const { player: { name } } = JSON.parse(localStorage.getItem('state'));
+    const { player } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
         <img
           data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${this.createGravatar}` }
+          src={ `https://www.gravatar.com/avatar/${this.createGravatar(player.gravatarEmail)}` }
           alt="Avatar do Usuário"
         />
         <h3
           data-testid="header-player-name"
         >
-          { name }
+          { player.name }
         </h3>
-        <p data-testid="header-score">{score}</p>
+        <p data-testid="header-score">{player.score}</p>
       </header>
     );
   }
