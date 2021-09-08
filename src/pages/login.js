@@ -23,6 +23,10 @@ class LoginScreen extends React.Component {
     this.nicknameValidation = this.nicknameValidation.bind(this);
   }
 
+  componentDidMount() {
+    fetchTokenApi();
+  }
+
   handleChange({ target }) {
     const { value, name } = target;
     if (name === 'email') {
@@ -73,7 +77,6 @@ class LoginScreen extends React.Component {
       },
     };
     this.setState({ shouldRedirect: true });
-    fetchTokenApi();
     localStorage.setItem('state', JSON.stringify(players));
   }
 

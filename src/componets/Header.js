@@ -4,39 +4,29 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   constructor() {
     super();
-    this.getInfo = this.getInfo.bind(this);
     this.createGravatar = this.createGravatar.bind(this);
   }
 
-  getInfo(key) {
-    const localGet = JSON.parse(localStorage.getItem('state'));
-    const { player } = localGet;
-    return player[key];
-  }
-
-  createGravatar() {
-    const gravatar = md5(this.getInfo('gravatarEmail').toString());
+  createGravatar(info) {
+    const gravatar = md5(info.toString());
     return gravatar;
   }
 
   render() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
         <img
           data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${this.createGravatar}` }
+          src={ `https://www.gravatar.com/avatar/${this.createGravatar(player.gravatarEmail)}` }
           alt="Avatar do Usuário"
         />
         <h3
           data-testid="header-player-name"
         >
-          { this.getInfo('name')}
+          { player.name }
         </h3>
-        <p
-          data-testid="header-score"
-        >
-          0
-        </p>
+        <p data-testid="header-score">0</p>
       </header>
     );
   }
