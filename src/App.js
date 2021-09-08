@@ -9,6 +9,8 @@ import {
 import LoginScreen from './pages/login';
 import ConfigScreen from './pages/config';
 import GameScreen from './pages/game';
+import FeedbackScreen from './pages/feedback';
+import RankingScreen from './pages/ranking';
 
 export default function App() {
   return (
@@ -17,8 +19,8 @@ export default function App() {
         <Route exact path="/" component={ LoginScreen } />
         <Route exact path="/game" component={ GameScreen } />
         <Route exact path="/config" component={ ConfigScreen } />
-        {/* <Route exact path="/feedback" component={ FeedbackScreen } /> */}
-        {/* <Route exact path="/ranking" component={ RankingScreen } /> */}
+        <Route exact path="/feedback" component={ FeedbackScreen } />
+        <Route exact path="/ranking" component={ RankingScreen } />
       </Switch>
     </Router>
   );
