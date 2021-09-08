@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Options from '../componets/Options';
+import Header from '../componets/Header';
 
 class GameScreen extends React.Component {
   constructor() {
@@ -41,6 +42,7 @@ class GameScreen extends React.Component {
     if (!questions[contador]) return 'loading...';
     return (
       <div>
+        <Header />
         <Link to="/">Back</Link>
         <h2 data-testid="question-category">{questions[contador].category}</h2>
         <h3 data-testid="question-text">{questions[contador].question}</h3>
