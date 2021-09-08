@@ -24,8 +24,9 @@ class GameScreen extends React.Component {
     const tokenGet = localStorage.getItem(('token'));
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
-    localStorage.setItem('questions', JSON.stringify(questionsApi.results));
-    this.setState({ questions: questionsApi.results });
+    const questionJson = await questionsApi.results;
+    localStorage.setItem('questions', JSON.stringify(questionJson));
+    this.setState({ questions: questionJson });
   }
 
   handleClick() {
