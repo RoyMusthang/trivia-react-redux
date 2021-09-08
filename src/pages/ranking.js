@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class RankingScreen extends Component {
   constructor() {
@@ -22,24 +22,6 @@ class RankingScreen extends Component {
   createGravatar() {
     const gravatar = md5(this.getInfo('gravatarEmail').toString());
     return gravatar;
-  }
-
-  createLi() {
-    return (
-      <li className="ranking-person ">
-        <img
-          // data-testid={ `player-name-${index}` }
-          src={ `https://www.gravatar.com/avatar/${this.createGravatar}` }
-          alt="Avatar do Usuário"
-        />
-        <h3>
-          { this.getInfo('name')}
-        </h3>
-        <h3>
-          { this.getInfo('score')}
-        </h3>
-        {this.rankStorage}
-      </li>);
   }
 
   rankStorage() {
