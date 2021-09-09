@@ -1,3 +1,5 @@
+import { LOGIN_INFO } from '../actions';
+
 const INITIAL_STATE = {
   email: '',
   nickName: '',
@@ -5,6 +7,8 @@ const INITIAL_STATE = {
 
 function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
+  case LOGIN_INFO:
+    return { ...state, email: action.payload.email, nickName: action.payload.nickname };
   default:
     return state;
   }

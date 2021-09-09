@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 class Options extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isCorrect: false,
     };
     this.verifyCorrect = this.verifyCorrect.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -22,21 +23,36 @@ class Options extends Component {
     return this.setState({ isCorrect: false });
   }
 
+  handleClick() {
+    const correto = document.querySelector('#correct');
+    const incorretos = document.querySelectorAll('#incorrect');
+    correto.classList.add('correct');
+    incorretos.forEach((incorreto) => incorreto.classList.add('incorrect'));
+  }
+
   render() {
     const { contador, questions, chave } = this.props;
     const { isCorrect } = this.state;
     if (isCorrect) {
       return (
-        <option data-testid="correct-answer">
+        <button
+          type="button"
+          id="correct"
+          onClick={ this.handleClick }
+          data-testid="correct-answer"
+        >
           {questions[contador].correct_answer}
-        </option>);
+        </button>);
     }
     return (
-      <option
+      <button
+        id="incorrect"
+        type="button"
+        onClick={ this.handleClick }
         data-testid={ `wrong-answer-${chave}` }
       >
         {questions[contador].incorrect_answers[chave - 1]}
-      </option>
+      </button>
     );
   }
 }

@@ -31,9 +31,13 @@ class GameScreen extends React.Component {
 
   handleClick() {
     const { contador } = this.state;
+    const correto = document.querySelector('#correct');
+    const incorretos = document.querySelectorAll('#incorrect');
     this.setState({
       contador: contador + 1,
     });
+    correto.classList.remove('correct');
+    incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
   }
 
   render() {
@@ -45,14 +49,14 @@ class GameScreen extends React.Component {
         <Link to="/">Back</Link>
         <h2 data-testid="question-category">{questions[contador].category}</h2>
         <h3 data-testid="question-text">{questions[contador].question}</h3>
-        <select>
+        <form>
           <Options questions={ questions } chave={ 0 } contador={ contador } />
           <Options questions={ questions } chave={ 1 } contador={ contador } />
           <Options questions={ questions } chave={ 2 } contador={ contador } />
           <Options questions={ questions } chave={ 3 } contador={ contador } />
-        </select>
+        </form>
         <button
-          type="submit"
+          type="button"
           onClick={ this.handleClick }
         >
           Next
