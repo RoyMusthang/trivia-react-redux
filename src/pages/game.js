@@ -2,22 +2,35 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
+import Timer from '../componets/Timer';
 
 class GameScreen extends React.Component {
   constructor() {
     super();
 
     this.state = {
+      done: false,
+      timer: 10,
       contador: 0,
       questions: [],
     };
 
     this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.timerClock = this.timerClock.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestion();
+    this.timerClock();
+  }
+
+  componentDidUpdate() {
+    const { timer } = this.state;
+    const ZERO_SECOND = 0;
+    if (timer < ZERO_SECOND) {
+      this.resetCronometer();
+    }
   }
 
   async fetchQuestion() {
@@ -40,8 +53,22 @@ class GameScreen extends React.Component {
     incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
   }
 
+  timerClock() {
+    const { done } = this.state;
+    const ONE_SECOND = 1000;
+    if (!done) {
+      setInterval(() => {
+        this.setState((prevState) => ({ timer: prevState.timer - 1 }));
+      }, ONE_SECOND);
+    }
+  }
+
+  resetCronometer() {
+    clearInterval(this.timerClock);
+  }
+
   render() {
-    const { contador, questions } = this.state;
+    const { contador, questions, timer } = this.state;
     if (!questions[contador]) return 'loading...';
     return (
       <div>
@@ -55,6 +82,9 @@ class GameScreen extends React.Component {
           <Options questions={ questions } chave={ 2 } contador={ contador } />
           <Options questions={ questions } chave={ 3 } contador={ contador } />
         </div>
+
+        <Timer timer={ timer } />
+
         <button
           type="button"
           onClick={ this.handleClick }
