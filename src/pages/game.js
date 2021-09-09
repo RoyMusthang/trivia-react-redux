@@ -49,12 +49,12 @@ class GameScreen extends React.Component {
         <Link to="/">Back</Link>
         <h2 data-testid="question-category">{questions[contador].category}</h2>
         <h3 data-testid="question-text">{questions[contador].question}</h3>
-        <form>
+        <div className="answers">
           <Options questions={ questions } chave={ 0 } contador={ contador } />
           <Options questions={ questions } chave={ 1 } contador={ contador } />
           <Options questions={ questions } chave={ 2 } contador={ contador } />
           <Options questions={ questions } chave={ 3 } contador={ contador } />
-        </form>
+        </div>
         <button
           type="button"
           onClick={ this.handleClick }
