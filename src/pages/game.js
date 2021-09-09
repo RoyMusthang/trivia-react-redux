@@ -2,22 +2,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
+import Timer from '../componets/Timer';
 
 class GameScreen extends React.Component {
   constructor() {
     super();
 
     this.state = {
+      done: false,
+      timer: 30,
       contador: 0,
       questions: [],
     };
 
     this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.startCountdown = this.startCountdown.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestion();
+    this.startCountdown();
   }
 
   async fetchQuestion() {
@@ -34,14 +39,33 @@ class GameScreen extends React.Component {
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
     this.setState({
+      done: false,
       contador: contador + 1,
     });
     correto.classList.remove('correct');
     incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
   }
 
+  startCountdown() {
+    const ONE_SECOND = 1000;
+    const updateState = () => {
+      const { timer, done } = this.state;
+      if (!done) {
+        if (timer > 0) {
+          this.setState((prevState) => ({ timer: prevState.timer - 1 }));
+        } else {
+          clearInterval(updateState);
+          this.setState({ done: true });
+        }
+      } else {
+        this.setState({ timer: 30 });
+      }
+    };
+    setInterval(updateState, ONE_SECOND);
+  }
+
   render() {
-    const { contador, questions } = this.state;
+    const { contador, questions, timer, done } = this.state;
     if (!questions[contador]) return 'loading...';
     return (
       <div>
@@ -50,11 +74,34 @@ class GameScreen extends React.Component {
         <h2 data-testid="question-category">{questions[contador].category}</h2>
         <h3 data-testid="question-text">{questions[contador].question}</h3>
         <div className="answers">
-          <Options questions={ questions } chave={ 0 } contador={ contador } />
-          <Options questions={ questions } chave={ 1 } contador={ contador } />
-          <Options questions={ questions } chave={ 2 } contador={ contador } />
-          <Options questions={ questions } chave={ 3 } contador={ contador } />
+          <Options
+            questions={ questions }
+            chave={ 0 }
+            contador={ contador }
+            done={ done }
+          />
+          <Options
+            questions={ questions }
+            chave={ 1 }
+            contador={ contador }
+            done={ done }
+          />
+          <Options
+            questions={ questions }
+            chave={ 2 }
+            contador={ contador }
+            done={ done }
+          />
+          <Options
+            questions={ questions }
+            chave={ 3 }
+            contador={ contador }
+            done={ done }
+          />
         </div>
+
+        <Timer timer={ timer } />
+
         <button
           type="button"
           onClick={ this.handleClick }

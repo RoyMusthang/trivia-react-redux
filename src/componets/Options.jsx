@@ -23,6 +23,10 @@ class Options extends Component {
     return this.setState({ isCorrect: false });
   }
 
+  checkTrue() {
+
+  }
+
   handleClick() {
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
@@ -31,7 +35,7 @@ class Options extends Component {
   }
 
   render() {
-    const { contador, questions, chave } = this.props;
+    const { contador, questions, chave, done } = this.props;
     const { isCorrect } = this.state;
     if (isCorrect) {
       return (
@@ -40,6 +44,7 @@ class Options extends Component {
           id="correct"
           onClick={ this.handleClick }
           data-testid="correct-answer"
+          disabled={ done }
         >
           {questions[contador].correct_answer}
         </button>);
@@ -50,6 +55,7 @@ class Options extends Component {
         type="button"
         onClick={ this.handleClick }
         data-testid={ `wrong-answer-${chave}` }
+        disabled={ done }
       >
         {questions[contador].incorrect_answers[chave - 1]}
       </button>
