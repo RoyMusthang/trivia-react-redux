@@ -35,6 +35,7 @@ class GameScreen extends React.Component {
   }
 
   handleClick() {
+    const next = document.querySelector('#nextButton');
     const { contador } = this.state;
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
@@ -44,11 +45,14 @@ class GameScreen extends React.Component {
     });
     correto.classList.remove('correct');
     incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
+    next.classList.remove('next');
+    next.classList.add('nextDisabled');
   }
 
   startCountdown() {
     const ONE_SECOND = 1000;
     const updateState = () => {
+      const next = document.querySelector('#nextButton');
       const { timer, done } = this.state;
       if (!done) {
         if (timer > 0) {
@@ -56,6 +60,8 @@ class GameScreen extends React.Component {
         } else {
           clearInterval(updateState);
           this.setState({ done: true });
+          next.classList.add('next');
+          next.classList.remove('nextDisabled');
         }
       } else {
         this.setState({ timer: 30 });
@@ -103,8 +109,11 @@ class GameScreen extends React.Component {
         <Timer timer={ timer } />
 
         <button
+          className="nextDisabled"
+          id="nextButton"
           type="button"
           onClick={ this.handleClick }
+          data-testid="btn-next"
         >
           Next
         </button>

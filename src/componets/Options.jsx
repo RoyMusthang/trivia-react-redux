@@ -30,8 +30,11 @@ class Options extends Component {
   handleClick() {
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
+    const next = document.querySelector('#nextButton');
     correto.classList.add('correct');
     incorretos.forEach((incorreto) => incorreto.classList.add('incorrect'));
+    next.classList.remove('nextDisabled');
+    next.classList.add('next');
   }
 
   render() {
