@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import reducer from './reducer';
+import pontuador from './pontuador';
 
-const rootreducer = combineReducers({ reducer });
+const rootreducer = combineReducers({ pontuador });
 
 export default rootreducer;

@@ -1,6 +1,6 @@
-export const LOGIN_INFO = 'LOGIN_INFO';
+export const SCORE_INFO = 'SCORE_INFO';
 
-export const sendLoginInfo = (payload) => ({
-  type: LOGIN_INFO,
+export const sendScore = (payload) => ({
+  type: SCORE_INFO,
   payload,
 });

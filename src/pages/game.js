@@ -18,11 +18,20 @@ class GameScreen extends React.Component {
     this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
+    // ENVIAR SCORE PARA REDUX E CRIAR CONTADOR DE ACERTOS E ENVIAR TAMBÉM PARA O REDUX
   }
 
   componentDidMount() {
     this.fetchQuestion();
     this.startCountdown();
+    this.resetLocal();
+  }
+
+  resetLocal() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.score = 0;
+
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchQuestion() {
@@ -42,6 +51,7 @@ class GameScreen extends React.Component {
     this.setState({
       done: false,
       contador: contador + 1,
+      timer: 30,
     });
     correto.classList.remove('correct');
     incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
@@ -75,12 +85,14 @@ class GameScreen extends React.Component {
     if (!questions[contador]) return 'loading...';
     return (
       <div>
+        {/* {console.log(questions[contador])} */}
         <Header />
         <Link to="/">Back</Link>
         <h2 data-testid="question-category">{questions[contador].category}</h2>
         <h3 data-testid="question-text">{questions[contador].question}</h3>
         <div className="answers">
           <Options
+            timer={ timer }
             questions={ questions }
             chave={ 0 }
             contador={ contador }
@@ -105,9 +117,7 @@ class GameScreen extends React.Component {
             done={ done }
           />
         </div>
-
         <Timer timer={ timer } />
-
         <button
           className="nextDisabled"
           id="nextButton"

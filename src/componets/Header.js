@@ -1,9 +1,13 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
 
 class Header extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
     this.createGravatar = this.createGravatar.bind(this);
   }
 
@@ -12,8 +16,18 @@ class Header extends Component {
     return gravatar;
   }
 
+  updateLocalStorage() {
+    const { score } = this.props;
+    const state = localStorage.getItem('state');
+    let scoreString = state.split('score')[1];
+    scoreString = score;
+    const stateSplit = state.split('score')[0] + scoreString;
+    localStorage.setItem('state', stateSplit);
+  }
+
   render() {
-    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { player } = JSON.parse(localStorage.state);
+    const { score } = this.props;
     return (
       <header>
         <img
@@ -26,10 +40,18 @@ class Header extends Component {
         >
           { player.name }
         </h3>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{score}</p>
       </header>
     );
   }
 }
 
-export default Header;
+Header.propTypes = {
+  score: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  score: state.pontuador.score,
+});
+
+export default connect(mapStateToProps)(Header);

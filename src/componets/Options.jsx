@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { sendScore } from '../redux/actions';
 
 class Options extends Component {
   constructor(props) {
@@ -23,11 +25,21 @@ class Options extends Component {
     return this.setState({ isCorrect: false });
   }
 
-  checkTrue() {
-
+  pointer(target) {
+    const { questions, contador, timer, updateScore } = this.props;
+    const { difficulty } = questions[contador];
+    if (target.id === 'correct') {
+      const DEZ = 10;
+      const lsData = JSON.parse(localStorage.getItem('state'));
+      lsData.player.assertions += 1;
+      const difficulties = ['bico de pato', 'easy', 'medium', 'hard'];
+      const diffMultiplier = difficulties.indexOf(difficulty);
+      lsData.player.score += DEZ + (timer * diffMultiplier);
+      updateScore(({ score: lsData.player.score, assertions: lsData.player.assertions }));
+    }
   }
 
-  handleClick() {
+  handleClick({ target }) {
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
     const next = document.querySelector('#nextButton');
@@ -35,6 +47,7 @@ class Options extends Component {
     incorretos.forEach((incorreto) => incorreto.classList.add('incorrect'));
     next.classList.remove('nextDisabled');
     next.classList.add('next');
+    this.pointer(target);
   }
 
   render() {
@@ -53,6 +66,7 @@ class Options extends Component {
         </button>);
     }
     return (
+
       <button
         id="incorrect"
         type="button"
@@ -66,8 +80,16 @@ class Options extends Component {
   }
 }
 
+const mapsStateToProps = (state) => ({
+  score: state.pontuador.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (obj) => dispatch(sendScore(obj)),
+});
+
 Options.propTypes = {
   contador: PropTypes.number,
   questions: PropTypes.arrayOf(),
 }.isRequired;
-export default Options;
+export default connect(mapsStateToProps, mapDispatchToProps)(Options);
