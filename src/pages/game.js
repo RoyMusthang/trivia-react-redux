@@ -18,6 +18,7 @@ class GameScreen extends React.Component {
     this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
+    // ENVIAR SCORE PARA REDUX E CRIAR CONTADOR DE ACERTOS E ENVIAR TAMBÉM PARA O REDUX
   }
 
   componentDidMount() {

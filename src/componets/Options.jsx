@@ -10,7 +10,6 @@ class Options extends Component {
     };
     this.verifyCorrect = this.verifyCorrect.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.findDificulty = this.findDificulty.bind(this);
   }
 
   componentDidMount() {
@@ -27,13 +26,14 @@ class Options extends Component {
 
   pointer(target) {
     const { questions, contador } = this.props;
+    const { timer } = this.state;
     const { difficulty } = questions[contador];
     if (target.id === 'correct') {
       const DEZ = 10;
       const lsData = JSON.parse(localStorage.state);
       const difficulties = ['bico de pato', 'easy', 'medium', 'hard'];
       const diffMultiplier = difficulties.indexOf(difficulty);
-      lsData.player.score += DEZ + (seconds * diffMultiplier);
+      lsData.player.score += DEZ + (timer * diffMultiplier);
     }
   }
 
@@ -45,9 +45,8 @@ class Options extends Component {
     incorretos.forEach((incorreto) => incorreto.classList.add('incorrect'));
     next.classList.remove('nextDisabled');
     next.classList.add('next');
-    poiter(target);
+    this.pointer(target);
   }
-
 
   render() {
     const { contador, questions, chave, done } = this.props;
