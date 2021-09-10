@@ -24,6 +24,14 @@ class GameScreen extends React.Component {
   componentDidMount() {
     this.fetchQuestion();
     this.startCountdown();
+    this.resetLocal();
+  }
+
+  resetLocal() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.score = 0;
+
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchQuestion() {
@@ -84,6 +92,7 @@ class GameScreen extends React.Component {
         <h3 data-testid="question-text">{questions[contador].question}</h3>
         <div className="answers">
           <Options
+            timer={ timer }
             questions={ questions }
             chave={ 0 }
             contador={ contador }

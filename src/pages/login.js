@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
 import fetchTokenApi from './index';
-import { sendLoginInfo } from '../redux/actions';
 
 class LoginScreen extends React.Component {
   constructor() {
@@ -71,7 +69,6 @@ class LoginScreen extends React.Component {
 
   handleClick() {
     const { nickname, email } = this.state;
-    const { sendLoginInfoProp } = this.props;
     const players = {
       player: {
         name: nickname,
@@ -82,7 +79,6 @@ class LoginScreen extends React.Component {
     };
     this.setState({ shouldRedirect: true });
     localStorage.setItem('state', JSON.stringify(players));
-    sendLoginInfoProp(({ email, nickname }));
   }
 
   render() {
@@ -132,8 +128,4 @@ LoginScreen.propTypes = {
   sendLoginInfo: PropTypes.func,
 }.isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  sendLoginInfoProp: (info) => dispatch(sendLoginInfo(info)),
-});
-
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default LoginScreen;
