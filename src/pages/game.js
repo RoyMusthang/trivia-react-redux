@@ -42,6 +42,7 @@ class GameScreen extends React.Component {
     this.setState({
       done: false,
       contador: contador + 1,
+      timer: 30,
     });
     correto.classList.remove('correct');
     incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
@@ -75,6 +76,7 @@ class GameScreen extends React.Component {
     if (!questions[contador]) return 'loading...';
     return (
       <div>
+        {/* {console.log(questions[contador])} */}
         <Header />
         <Link to="/">Back</Link>
         <h2 data-testid="question-category">{questions[contador].category}</h2>
@@ -105,9 +107,7 @@ class GameScreen extends React.Component {
             done={ done }
           />
         </div>
-
         <Timer timer={ timer } />
-
         <button
           className="nextDisabled"
           id="nextButton"

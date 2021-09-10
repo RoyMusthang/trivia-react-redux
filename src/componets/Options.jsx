@@ -6,9 +6,11 @@ class Options extends Component {
     super(props);
     this.state = {
       isCorrect: false,
+      timer: 30,
     };
     this.verifyCorrect = this.verifyCorrect.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.findDificulty = this.findDificulty.bind(this);
   }
 
   componentDidMount() {
@@ -23,11 +25,19 @@ class Options extends Component {
     return this.setState({ isCorrect: false });
   }
 
-  checkTrue() {
-
+  pointer(target) {
+    const { questions, contador } = this.props;
+    const { difficulty } = questions[contador];
+    if (target.id === 'correct') {
+      const DEZ = 10;
+      const lsData = JSON.parse(localStorage.state);
+      const difficulties = ['bico de pato', 'easy', 'medium', 'hard'];
+      const diffMultiplier = difficulties.indexOf(difficulty);
+      lsData.player.score += DEZ + (seconds * diffMultiplier);
+    }
   }
 
-  handleClick() {
+  handleClick({ target }) {
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
     const next = document.querySelector('#nextButton');
@@ -35,7 +45,9 @@ class Options extends Component {
     incorretos.forEach((incorreto) => incorreto.classList.add('incorrect'));
     next.classList.remove('nextDisabled');
     next.classList.add('next');
+    poiter(target);
   }
+
 
   render() {
     const { contador, questions, chave, done } = this.props;
@@ -53,6 +65,7 @@ class Options extends Component {
         </button>);
     }
     return (
+
       <button
         id="incorrect"
         type="button"
