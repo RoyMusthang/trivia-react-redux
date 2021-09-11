@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setOptions } from '../redux/actions';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
 import Timer from '../componets/Timer';
@@ -9,16 +11,14 @@ class GameScreen extends React.Component {
     super();
 
     this.state = {
+      contador: 0,
       done: false,
       timer: 30,
-      contador: 0,
-      questions: [],
     };
 
     this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
-    // ENVIAR SCORE PARA REDUX E CRIAR CONTADOR DE ACERTOS E ENVIAR TAMBÉM PARA O REDUX
   }
 
   componentDidMount() {
@@ -30,17 +30,18 @@ class GameScreen extends React.Component {
   resetLocal() {
     const state = JSON.parse(localStorage.getItem('state'));
     state.player.score = 0;
-
     localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchQuestion() {
+    const { setOption } = this.props;
     const tokenGet = localStorage.getItem(('token'));
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
     const questionJson = await questionsApi.results;
     localStorage.setItem('questions', JSON.stringify(questionJson));
     this.setState({ questions: questionJson });
+    setOption(questionJson); 
   }
 
   handleClick() {
@@ -81,40 +82,15 @@ class GameScreen extends React.Component {
   }
 
   render() {
-    const { contador, questions, timer, done } = this.state;
-    if (!questions[contador]) return 'loading...';
+    const { questions, timer } = this.state;
+    if (!questions) return 'loading...';
     return (
       <div>
-        {/* {console.log(questions[contador])} */}
-        <Header />
-        <Link to="/">Back</Link>
-        <h2 data-testid="question-category">{questions[contador].category}</h2>
-        <h3 data-testid="question-text">{questions[contador].question}</h3>
-        <div className="answers">
+        <div>
+          <Header />
+          <Link to="/">Back</Link>
           <Options
-            timer={ timer }
-            questions={ questions }
-            chave={ 0 }
-            contador={ contador }
-            done={ done }
-          />
-          <Options
-            questions={ questions }
-            chave={ 1 }
-            contador={ contador }
-            done={ done }
-          />
-          <Options
-            questions={ questions }
-            chave={ 2 }
-            contador={ contador }
-            done={ done }
-          />
-          <Options
-            questions={ questions }
-            chave={ 3 }
-            contador={ contador }
-            done={ done }
+            question={ questions[contador] }
           />
         </div>
         <Timer timer={ timer } />
@@ -132,4 +108,8 @@ class GameScreen extends React.Component {
   }
 }
 
-export default GameScreen;
+const mapDispatchToProps = (dispatch) => ({
+  setOption: (payload) => dispatch(setOptions(payload)),
+})
+
+export default connect(null, mapDispatchToProps)(GameScreen);
