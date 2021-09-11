@@ -1,8 +1,9 @@
-import { SCORE_INFO } from '../actions';
+import { SCORE_INFO, SET_DONE, SET_RESET } from '../actions';
 
 const INITIAL_STATE = {
   score: 0,
   assertions: 0,
+  done: false,
 };
 
 const updateLocalStorage = (score) => {
@@ -19,6 +20,10 @@ function pontuador(state = INITIAL_STATE, action) {
     return { ...state,
       score: state.score + Number(action.payload.score),
       assertions: state.assertions + Number(action.payload.assertions) };
+  case SET_DONE:
+    return { ...state, done: action.payload };
+  case SET_RESET:
+    return { ...state, score: 0, assertions: 0 };
   default:
     return state;
   }

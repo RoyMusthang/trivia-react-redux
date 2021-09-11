@@ -7,29 +7,32 @@ class Options extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDisabled: false,
       arrayOptions: [],
     };
     this.handleClick = this.handleClick.bind(this);
     this.optionsFunc = this.optionsFunc.bind(this);
+    this.disableFunc = this.disableFunc.bind(this);
   }
-
-  // verifyCorrect() {
-  //   const { contador, chave } = this.props;
-  //   if (contador === chave) {
-  //     return this.setState({ isCorrect: true });
-  //   }
-  //   return this.setState({ isCorrect: false });
-  // }
 
   componentDidMount() {
     this.optionsFunc();
   }
 
   componentDidUpdate(prevProp) {
-    const { questionChosen } = this.props;
+    const { questionChosen, done } = this.props;
     if (questionChosen.question !== prevProp.questionChosen.question) {
       this.optionsFunc();
+      this.disableFunc();
     }
+    if (done !== prevProp.done) {
+      this.disableFunc();
+    }
+  }
+
+  disableFunc() {
+    const { isDisabled } = this.state;
+    this.setState({ isDisabled: !isDisabled });
   }
 
   pointer(target) {
@@ -47,7 +50,6 @@ class Options extends Component {
   }
 
   handleClick({ target }) {
-    const { changeDone } = this.props;
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
     const next = document.querySelector('#nextButton');
@@ -56,7 +58,8 @@ class Options extends Component {
     next.classList.remove('nextDisabled');
     next.classList.add('next');
     this.pointer(target);
-    changeDone();
+    correto.disabled = true;
+    incorretos.forEach((incorreto) => { incorreto.disabled = true; });
   }
 
   shuffleArray(array) {
@@ -70,6 +73,7 @@ class Options extends Component {
 
   optionsFunc() {
     const { questionChosen, done } = this.props;
+    const { isDisabled } = this.state;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: inCorrectAnswer,
@@ -81,7 +85,7 @@ class Options extends Component {
         id="correct"
         onClick={ this.handleClick }
         data-testid="correct-answer"
-        disabled={ done }
+
       >
         {correctAnswer}
       </button>
@@ -94,7 +98,7 @@ class Options extends Component {
           id="incorrect"
           onClick={ this.handleClick }
           data-testid={ `wrong-answer${i}` }
-          disabled={ done }
+
         >
           {ques}
         </button>

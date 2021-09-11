@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setOptions } from '../redux/actions';
+import { sendDone, setOptions } from '../redux/actions';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
 import Timer from '../componets/Timer';
@@ -59,7 +59,9 @@ class GameScreen extends React.Component {
         timer: 30,
       });
       correto.classList.remove('correct');
+      correto.disabled = false;
       incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
+      incorretos.forEach((incorreto) => { incorreto.disabled = false; });
       next.classList.remove('next');
       next.classList.add('nextDisabled');
     } else {
@@ -73,11 +75,15 @@ class GameScreen extends React.Component {
       const next = document.querySelector('#nextButton');
       const { timer, done } = this.state;
       if (!done) {
+        const incorretos = document.querySelectorAll('#incorrect');
+        const correto = document.querySelector('#correct');
         if (timer > 0) {
           this.setState((prevState) => ({ timer: prevState.timer - 1 }));
         } else {
           clearInterval(updateState);
           this.changeDone();
+          correto.disabled = true;
+          incorretos.forEach((incorreto) => { incorreto.disabled = true; });
           next.classList.add('next');
           next.classList.remove('nextDisabled');
         }
@@ -90,7 +96,9 @@ class GameScreen extends React.Component {
 
   changeDone() {
     const { done } = this.state;
+    const { setDone } = this.props;
     this.setState({ done: !done });
+    setDone(done);
   }
 
   render() {
@@ -137,6 +145,7 @@ const mapsStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setOption: (payload) => dispatch(setOptions(payload)),
+  setDone: (done) => dispatch(sendDone(done)),
 });
 
 export default connect(mapsStateToProps, mapDispatchToProps)(GameScreen);
