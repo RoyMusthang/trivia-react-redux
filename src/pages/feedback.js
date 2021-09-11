@@ -12,11 +12,11 @@ class FeedbackScreen extends Component {
   }
 
   handleClick({ target: { optButton } }) {
-    const { history, sendResetPontuation } = this.props;
+    const { history, resetStore } = this.props;
     if (optButton === 'Ver Ranking') {
       history.push('/ranking');
     } else {
-      sendResetPontuation();
+      resetStore();
       history.push('/game');
     }
   }
