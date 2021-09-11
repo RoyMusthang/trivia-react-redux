@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -19,6 +20,7 @@ class GameScreen extends React.Component {
     this.fetchQuestion = this.fetchQuestion.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
+    this.changeDone = this.changeDone.bind(this);
   }
 
   componentDidMount() {
@@ -40,24 +42,29 @@ class GameScreen extends React.Component {
     const questionsApi = await fetchQuestions.json();
     const questionJson = await questionsApi.results;
     localStorage.setItem('questions', JSON.stringify(questionJson));
-    this.setState({ questions: questionJson });
-    setOption(questionJson); 
+    setOption(questionJson);
   }
 
   handleClick() {
-    const next = document.querySelector('#nextButton');
+    const QUATRO = 4;
+    const { history } = this.props;
     const { contador } = this.state;
-    const correto = document.querySelector('#correct');
-    const incorretos = document.querySelectorAll('#incorrect');
-    this.setState({
-      done: false,
-      contador: contador + 1,
-      timer: 30,
-    });
-    correto.classList.remove('correct');
-    incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
-    next.classList.remove('next');
-    next.classList.add('nextDisabled');
+    if (contador < QUATRO) {
+      const next = document.querySelector('#nextButton');
+      const correto = document.querySelector('#correct');
+      const incorretos = document.querySelectorAll('#incorrect');
+      this.setState({
+        done: false,
+        contador: contador + 1,
+        timer: 30,
+      });
+      correto.classList.remove('correct');
+      incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
+      next.classList.remove('next');
+      next.classList.add('nextDisabled');
+    } else {
+      history.push('/feedback');
+    }
   }
 
   startCountdown() {
@@ -70,7 +77,7 @@ class GameScreen extends React.Component {
           this.setState((prevState) => ({ timer: prevState.timer - 1 }));
         } else {
           clearInterval(updateState);
-          this.setState({ done: true });
+          this.changeDone();
           next.classList.add('next');
           next.classList.remove('nextDisabled');
         }
@@ -81,16 +88,27 @@ class GameScreen extends React.Component {
     setInterval(updateState, ONE_SECOND);
   }
 
+  changeDone() {
+    const { done } = this.state;
+    this.setState({ done: !done });
+  }
+
   render() {
-    const { questions, timer } = this.state;
-    if (!questions) return 'loading...';
+    const { questions } = this.props;
+    const { timer, done, contador } = this.state;
+    if (questions.length === 0) {
+      return <p>loading...</p>;
+    }
     return (
       <div>
         <div>
           <Header />
           <Link to="/">Back</Link>
           <Options
-            question={ questions[contador] }
+            timer={ timer }
+            changeDone={ this.changeDone }
+            done={ done }
+            questionChosen={ questions[contador] }
           />
         </div>
         <Timer timer={ timer } />
@@ -108,8 +126,17 @@ class GameScreen extends React.Component {
   }
 }
 
+GameScreen.propTypes = {
+  questions: PropTypes.any,
+  setOption: PropTypes.func,
+}.isRequired;
+
+const mapsStateToProps = (state) => ({
+  questions: state.questionador.questions,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   setOption: (payload) => dispatch(setOptions(payload)),
-})
+});
 
-export default connect(null, mapDispatchToProps)(GameScreen);
+export default connect(mapsStateToProps, mapDispatchToProps)(GameScreen);

@@ -6,13 +6,11 @@ import { sendScore } from '../redux/actions';
 class Options extends Component {
   constructor(props) {
     super(props);
-
-    this.verifyCorrect = this.verifyCorrect.bind(this);
+    this.state = {
+      arrayOptions: [],
+    };
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentDidMount() {
-    this.verifyCorrect();
+    this.optionsFunc = this.optionsFunc.bind(this);
   }
 
   // verifyCorrect() {
@@ -23,9 +21,20 @@ class Options extends Component {
   //   return this.setState({ isCorrect: false });
   // }
 
+  componentDidMount() {
+    this.optionsFunc();
+  }
+
+  componentDidUpdate(prevProp) {
+    const { questionChosen } = this.props;
+    if (questionChosen.question !== prevProp.questionChosen.question) {
+      this.optionsFunc();
+    }
+  }
+
   pointer(target) {
-    const { questions, contador, timer, updateScore } = this.props;
-    const { difficulty } = questions[contador];
+    const { questionChosen, timer, updateScore } = this.props;
+    const { difficulty } = questionChosen;
     if (target.id === 'correct') {
       const DEZ = 10;
       const lsData = JSON.parse(localStorage.getItem('state'));
@@ -38,6 +47,7 @@ class Options extends Component {
   }
 
   handleClick({ target }) {
+    const { changeDone } = this.props;
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
     const next = document.querySelector('#nextButton');
@@ -46,75 +56,69 @@ class Options extends Component {
     next.classList.remove('nextDisabled');
     next.classList.add('next');
     this.pointer(target);
+    changeDone();
   }
 
   shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i -= 1) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = array[i];
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
       array[i] = array[j];
       array[j] = temp;
     }
   }
 
-  
+  optionsFunc() {
+    const { questionChosen, done } = this.props;
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: inCorrectAnswer,
+      question } = questionChosen;
+    const btnCorrect = (
+      <button
+        key={ question }
+        type="button"
+        id="correct"
+        onClick={ this.handleClick }
+        data-testid="correct-answer"
+        disabled={ done }
+      >
+        {correctAnswer}
+      </button>
+    );
+    const btnsIncorrect = (
+      inCorrectAnswer.map((ques, i) => (
+        <button
+          key={ i }
+          type="button"
+          id="incorrect"
+          onClick={ this.handleClick }
+          data-testid={ `wrong-answer${i}` }
+          disabled={ done }
+        >
+          {ques}
+        </button>
+      )));
+
+    const arr = [btnCorrect, ...btnsIncorrect];
+    this.shuffleArray(arr);
+    this.setState({ arrayOptions: arr });
+  }
 
   render() {
-    const { questions, done } = this.props;
-    const { correct_answer, incorrect_answers, type, category, question } = questions;
-    console.log(questions)
-    // const { isCorrect } = this.state;
+    const { arrayOptions } = this.state;
+    const { questionChosen } = this.props;
+    const { category, question } = questionChosen;
     return (
       <div>
         <h2 data-testid="question-category">{category}</h2>
         <h3 data-testid="question-text">{question}</h3>
-        <div className="answers">
-          
-          {
-            questions.map((question) => {
-              return (
-              <button
-                type="button"
-                id="correct"
-                onClick={ this.handleClick }
-                data-testid="correct-answer"
-                disabled={ done }
-              >
-                {correct_answer}
-              </button>
-              
-            )})
-          }
-        </div>
+        <div className="answers" />
+        {arrayOptions}
       </div>
     );
-    // if (isCorrect) {
-    //   return (
-    //     <button
-    //       type="button"
-    //       id="correct"
-    //       onClick={ this.handleClick }
-    //       data-testid="correct-answer"
-    //       disabled={ done }
-    //     >
-    //       {questions[contador].correct_answer}
-    //     </button>);
-    // }
-    // return (
-
-    //   <button
-    //     id="incorrect"
-    //     type="button"
-    //     onClick={ this.handleClick }
-    //     data-testid={ `wrong-answer-${chave}` }
-    //     disabled={ done }
-    //   >
-    //     {questions[contador].incorrect_answers[chave - 1]}
-    //   </button>
-    // );
   }
 }
-
 
 const mapsStateToProps = (state) => ({
   score: state.pontuador.score,

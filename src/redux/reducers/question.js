@@ -9,7 +9,7 @@ function questionador(state = INITIAL_STATE, action) {
   case SET_OPTIONS:
     return {
       ...state,
-      questions: [action.payload],
+      questions: action.payload,
     };
   default:
     return state;
