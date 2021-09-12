@@ -17,7 +17,7 @@ class FeedbackScreen extends Component {
       history.push('/ranking');
     } else {
       resetStore();
-      history.push('/game');
+      history.push('/');
     }
   }
 
@@ -39,7 +39,7 @@ class FeedbackScreen extends Component {
         </div>
         <button
           type="button"
-          dataTestId="btn-play-again"
+          data-testid="btn-play-again"
           name="Jogar Novamente"
           onClick={ this.handleClick }
         >
@@ -47,7 +47,7 @@ class FeedbackScreen extends Component {
         </button>
         <button
           type="button"
-          dataTestId="btn-ranking"
+          datatestid="btn-ranking"
           name="Ver Ranking"
           onClick={ this.handleClick }
         >
