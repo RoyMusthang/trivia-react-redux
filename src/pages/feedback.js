@@ -11,9 +11,9 @@ class FeedbackScreen extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick({ target: { optButton } }) {
+  handleClick({ target }) {
     const { history, resetStore } = this.props;
-    if (optButton === 'Ver Ranking') {
+    if (target.name === 'Ver Ranking') {
       history.push('/ranking');
     } else {
       resetStore();
@@ -47,7 +47,7 @@ class FeedbackScreen extends Component {
         </button>
         <button
           type="button"
-          datatestid="btn-ranking"
+          data-testid="btn-ranking"
           name="Ver Ranking"
           onClick={ this.handleClick }
         >
