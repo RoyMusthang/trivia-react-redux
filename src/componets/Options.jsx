@@ -72,8 +72,7 @@ class Options extends Component {
   }
 
   optionsFunc() {
-    const { questionChosen, done } = this.props;
-    const { isDisabled } = this.state;
+    const { questionChosen } = this.props;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: inCorrectAnswer,
