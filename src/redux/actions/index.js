@@ -3,6 +3,7 @@ export const SET_OPTIONS = 'SET_OPTIONS';
 export const SET_DONE = 'SET_DONE';
 export const SET_RESET = 'SET_RESET';
 export const SET_CONTADOR = 'SET_CONTADOR';
+// na
 
 export const sendScore = (payload) => ({
   type: SCORE_INFO,
