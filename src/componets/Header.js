@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+// jnoafsdjfsadńko]npk
 
 class Header extends Component {
   constructor(props) {
