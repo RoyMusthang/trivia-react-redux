@@ -48,7 +48,6 @@ class RankingScreen extends Component {
     const { ranking } = this.state;
     return (
       <div>
-        
         { ranking.map((player, indexPlayer) => (
           <div
             key={ indexPlayer }
