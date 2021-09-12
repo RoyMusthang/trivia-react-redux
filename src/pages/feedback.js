@@ -9,7 +9,6 @@ class FeedbackScreen extends Component {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
-    this.renderFeedbackQuestion = this.renderFeedbackQuestion.bind(this);
   }
 
   handleClick({ target: { optButton } }) {
@@ -22,45 +21,38 @@ class FeedbackScreen extends Component {
     }
   }
 
-  renderFeedbackQuestion() {
-    const { assertions } = this.props;
-    return <span data-testid="feedback-total-question">{assertions}</span>;
-  }
-
   render() {
-    const { correctAnswers, score } = this.props;
+    const { assertions, score } = this.props;
     const acertoBase = 3;
 
     return (
       <div>
         <Header />
-        <section>
-          <p data-testid="feedback-text">
-            {correctAnswers >= acertoBase ? 'Mandou bem!' : 'Podia ser melhor...'}
-          </p>
-          <span data-testid="feedback-total-score">
-            {score}
-          </span>
-          <span data-testid="feedback-total-question">
-            { this.renderFeedbackQuestion() }
-          </span>
-          <button
-            type="button"
-            dataTestId="btn-play-again"
-            name="Jogar Novamente"
-            onClick={ this.handleClick }
-          >
-            Jogar Novamente
-          </button>
-          <button
-            type="button"
-            dataTestId="btn-ranking"
-            name="Ver Ranking"
-            onClick={ this.handleClick }
-          >
-            Ver Ranking
-          </button>
-        </section>
+        <p data-testid="feedback-text">
+          {assertions > acertoBase ? 'Mandou bem!' : 'Podia ser melhor...'}
+        </p>
+        <div data-testid="feedback-total-score">
+          {score}
+        </div>
+        <div data-testid="feedback-total-question">
+          {assertions}
+        </div>
+        <button
+          type="button"
+          dataTestId="btn-play-again"
+          name="Jogar Novamente"
+          onClick={ this.handleClick }
+        >
+          Jogar Novamente
+        </button>
+        <button
+          type="button"
+          dataTestId="btn-ranking"
+          name="Ver Ranking"
+          onClick={ this.handleClick }
+        >
+          Ver Ranking
+        </button>
       </div>
     );
   }
@@ -73,14 +65,17 @@ FeedbackScreen.propTypes = {
   score: PropTypes.oneOfType([
     PropTypes.number,
   ]).isRequired,
-  correctAnswers: PropTypes.oneOfType([
+  assertions: PropTypes.oneOfType([
     PropTypes.number,
+  ]).isRequired,
+  resetStore: PropTypes.oneOfType([
+    PropTypes.func.isRequired,
   ]).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   score: state.pontuador.score,
-  correctAnswers: state.pontuador.assertions,
+  assertions: state.pontuador.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

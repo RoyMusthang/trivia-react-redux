@@ -23,8 +23,3 @@ export const sendResetPontuation = (payload) => ({
   type: SET_RESET,
   payload,
 });
-
-export const setContador = (payload) => ({
-  type: SET_CONTADOR,
-  payload,
-});
