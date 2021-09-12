@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../componets/Header';
+import { sendResetPontuation } from '../redux/actions';
 
 class FeedbackScreen extends Component {
   constructor(props) {
@@ -11,48 +12,47 @@ class FeedbackScreen extends Component {
   }
 
   handleClick({ target: { optButton } }) {
-    const { history } = this.props;
+    const { history, resetStore } = this.props;
     if (optButton === 'Ver Ranking') {
       history.push('/ranking');
     } else {
-      history.push('/GameScreen');
+      resetStore();
+      history.push('/game');
     }
   }
 
   render() {
-    const { correctAnswers, score } = this.props;
+    const { assertions, score } = this.props;
     const acertoBase = 3;
 
     return (
       <div>
         <Header />
-        <section>
-          <p data-testid="feedback-text">
-            {correctAnswers >= acertoBase ? 'Mandou bem!' : 'Poderia ser melhor...'}
-          </p>
-          <p data-testid="feedback-total-question">
-            {`Você acertou ${correctAnswers} questões de 5`}
-          </p>
-          <p data-testid="feedback-total-score">
-            {`Você marcou ${score} pontos no total!`}
-          </p>
-          <button
-            type="button"
-            dataTestId="btn-play-again"
-            name="Jogar Novamente"
-            onClick={ this.handleClick }
-          >
-            Jogar Novamente
-          </button>
-          <button
-            type="button"
-            dataTestId="btn-ranking"
-            name="Ver Ranking"
-            onClick={ this.handleClick }
-          >
-            Ver Ranking
-          </button>
-        </section>
+        <p data-testid="feedback-text">
+          {assertions > acertoBase ? 'Mandou bem!' : 'Podia ser melhor...'}
+        </p>
+        <div data-testid="feedback-total-score">
+          {score}
+        </div>
+        <div data-testid="feedback-total-question">
+          {assertions}
+        </div>
+        <button
+          type="button"
+          dataTestId="btn-play-again"
+          name="Jogar Novamente"
+          onClick={ this.handleClick }
+        >
+          Jogar Novamente
+        </button>
+        <button
+          type="button"
+          dataTestId="btn-ranking"
+          name="Ver Ranking"
+          onClick={ this.handleClick }
+        >
+          Ver Ranking
+        </button>
       </div>
     );
   }
@@ -64,17 +64,22 @@ FeedbackScreen.propTypes = {
   }).isRequired,
   score: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string,
   ]).isRequired,
-  correctAnswers: PropTypes.oneOfType([
+  assertions: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string,
+  ]).isRequired,
+  resetStore: PropTypes.oneOfType([
+    PropTypes.func.isRequired,
   ]).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  score: state.results.score,
-  correctAnswers: state.results.correctAnswers,
+  score: state.pontuador.score,
+  assertions: state.pontuador.assertions,
 });
 
-export default connect(mapStateToProps, null)(FeedbackScreen);
+const mapDispatchToProps = (dispatch) => ({
+  resetStore: () => dispatch(sendResetPontuation()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackScreen);
