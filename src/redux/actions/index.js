@@ -2,6 +2,7 @@ export const SCORE_INFO = 'SCORE_INFO';
 export const SET_OPTIONS = 'SET_OPTIONS';
 export const SET_DONE = 'SET_DONE';
 export const SET_RESET = 'SET_RESET';
+export const SET_CONTADOR = 'SET_CONTADOR';
 
 export const sendScore = (payload) => ({
   type: SCORE_INFO,
@@ -20,5 +21,10 @@ export const sendDone = (payload) => ({
 
 export const sendResetPontuation = (payload) => ({
   type: SET_RESET,
+  payload,
+});
+
+export const setContador = (payload) => ({
+  type: SET_CONTADOR,
   payload,
 });

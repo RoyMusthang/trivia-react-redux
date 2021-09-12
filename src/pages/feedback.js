@@ -9,6 +9,7 @@ class FeedbackScreen extends Component {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
+    this.renderFeedbackQuestion = this.renderFeedbackQuestion.bind(this);
   }
 
   handleClick({ target: { optButton } }) {
@@ -21,6 +22,11 @@ class FeedbackScreen extends Component {
     }
   }
 
+  renderFeedbackQuestion() {
+    const { assertions } = this.props;
+    return <span data-testid="feedback-total-question">{assertions}</span>;
+  }
+
   render() {
     const { correctAnswers, score } = this.props;
     const acertoBase = 3;
@@ -30,14 +36,14 @@ class FeedbackScreen extends Component {
         <Header />
         <section>
           <p data-testid="feedback-text">
-            {correctAnswers >= acertoBase ? 'Mandou bem!' : 'Poderia ser melhor...'}
+            {correctAnswers >= acertoBase ? 'Mandou bem!' : 'Podia ser melhor...'}
           </p>
-          <p data-testid="feedback-total-question">
-            {`Você acertou ${correctAnswers} questões de 5`}
-          </p>
-          <p data-testid="feedback-total-score">
-            {`Você marcou ${score} pontos no total!`}
-          </p>
+          <span data-testid="feedback-total-score">
+            {score}
+          </span>
+          <span data-testid="feedback-total-question">
+            { this.renderFeedbackQuestion() }
+          </span>
           <button
             type="button"
             dataTestId="btn-play-again"
@@ -66,11 +72,9 @@ FeedbackScreen.propTypes = {
   }).isRequired,
   score: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string,
   ]).isRequired,
   correctAnswers: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string,
   ]).isRequired,
 };
 

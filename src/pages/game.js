@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { sendDone, setOptions } from '../redux/actions';
+import { sendDone, setOptions, setContador } from '../redux/actions';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
 import Timer from '../componets/Timer';
@@ -15,6 +15,7 @@ class GameScreen extends React.Component {
       contador: 0,
       done: false,
       timer: 30,
+      quatro: 4,
     };
 
     this.fetchQuestion = this.fetchQuestion.bind(this);
@@ -46,18 +47,14 @@ class GameScreen extends React.Component {
   }
 
   handleClick() {
-    const QUATRO = 4;
-    const { history } = this.props;
-    const { contador } = this.state;
-    if (contador < QUATRO) {
+    const { history, setContador } = this.props;
+    const { contador, quatro } = this.state;
+    if (contador < quatro) {
       const next = document.querySelector('#nextButton');
       const correto = document.querySelector('#correct');
       const incorretos = document.querySelectorAll('#incorrect');
-      this.setState({
-        done: false,
-        contador: contador + 1,
-        timer: 30,
-      });
+      this.setState({ done: false, contador: contador + 1, timer: 30, });
+      setContador(contador);
       correto.classList.remove('correct');
       correto.disabled = false;
       incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
@@ -146,6 +143,7 @@ const mapsStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setOption: (payload) => dispatch(setOptions(payload)),
   setDone: (done) => dispatch(sendDone(done)),
+  setContador: (contador) => dispatch(setContador(contador)),
 });
 
 export default connect(mapsStateToProps, mapDispatchToProps)(GameScreen);
