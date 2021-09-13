@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../componets/Header';
-import { sendResetPontuation , setRanking } from '../redux/actions';
+import { sendResetPontuation, setRanking } from '../redux/actions';
 
 class FeedbackScreen extends Component {
   constructor(props) {
@@ -16,7 +16,6 @@ class FeedbackScreen extends Component {
   }
 
   handleClick({ target }) {
-    const { score } = this.props;
     const { history, resetStore } = this.props;
     if (target.name === 'Ver Ranking') {
       history.push('/ranking');
@@ -89,8 +88,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	players: (payload) => dispatch(setRanking(payload)),
-	resetStore: () => dispatch(sendResetPontuation()),
+  players: (payload) => dispatch(setRanking(payload)),
+  resetStore: () => dispatch(sendResetPontuation()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedbackScreen);

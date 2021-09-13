@@ -34,7 +34,7 @@ class GameScreen extends React.Component {
     const state = JSON.parse(localStorage.getItem('state'));
     state.player.score = 0;
     state.player.assertions = 0;
-    
+
     localStorage.setItem('state', JSON.stringify(state));
   }
 
