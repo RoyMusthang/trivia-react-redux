@@ -29,11 +29,13 @@ class Header extends Component {
   render() {
     const { player } = JSON.parse(localStorage.state);
     const { score } = this.props;
+    const picture = `https://www.gravatar.com/avatar/${this.createGravatar(player.gravatarEmail)}`;
+
     return (
       <header>
         <img
           data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${this.createGravatar(player.gravatarEmail)}` }
+          src={ picture }
           alt="Avatar do Usuário"
         />
         <h3
@@ -54,5 +56,9 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   score: state.pontuador.score,
 });
+
+// const mapDispatchToProps = () => ({
+
+// })
 
 export default connect(mapStateToProps)(Header);

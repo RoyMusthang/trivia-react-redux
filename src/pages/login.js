@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import fetchTokenApi from './index';
@@ -75,8 +76,16 @@ class LoginScreen extends React.Component {
         gravatarEmail: email,
       },
     };
+    const nomeBunitinho = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    console.log(nomeBunitinho);
+    const ranking = {
+      name: nickname,
+      score: '',
+      picture: nomeBunitinho,
+    };
     this.setState({ shouldRedirect: true });
     localStorage.setItem('state', JSON.stringify(players));
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   render() {

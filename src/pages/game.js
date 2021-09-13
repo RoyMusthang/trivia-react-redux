@@ -34,6 +34,7 @@ class GameScreen extends React.Component {
     const state = JSON.parse(localStorage.getItem('state'));
     state.player.score = 0;
     state.player.assertions = 0;
+    
     localStorage.setItem('state', JSON.stringify(state));
   }
 
@@ -43,7 +44,7 @@ class GameScreen extends React.Component {
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
     const questionJson = await questionsApi.results;
-    localStorage.setItem('questions', JSON.stringify(questionJson));
+    // localStorage.setItem('questions', JSON.stringify(questionJson));
     setOption(questionJson);
   }
 
