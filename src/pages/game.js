@@ -49,6 +49,7 @@ class GameScreen extends React.Component {
   }
 
   handleButtons() {
+    const { contador } = this.state;
     const next = document.querySelector('#nextButton');
     const correto = document.querySelector('#correct');
     const incorretos = document.querySelectorAll('#incorrect');
